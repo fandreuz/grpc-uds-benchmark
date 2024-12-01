@@ -3,6 +3,7 @@ import com.google.protobuf.gradle.id
 plugins {
     application
     id("com.google.protobuf") version "0.9.4"
+    id("me.champeau.jmh") version "0.7.2"
 }
 
 val grpcVersion = "1.68.2"
