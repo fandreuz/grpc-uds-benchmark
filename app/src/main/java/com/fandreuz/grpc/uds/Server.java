@@ -22,7 +22,7 @@ public class Server {
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
-                server.shutdown().awaitTermination(30, TimeUnit.SECONDS);
+                server.shutdownNow().awaitTermination(30, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
                 e.printStackTrace(System.err);
             }
