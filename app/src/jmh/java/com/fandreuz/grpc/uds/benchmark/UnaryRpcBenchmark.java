@@ -1,5 +1,6 @@
 package com.fandreuz.grpc.uds.benchmark;
 
+import com.fandreuz.grpc.uds.ClientUtils;
 import com.fandreuz.grpc.uds.Server;
 import com.fandreuz.grpc.uds.Transport;
 import com.fandreuz.grpc.uds.benchmark.echo.helloworld.GreeterGrpc;
@@ -31,13 +32,9 @@ public class UnaryRpcBenchmark {
     private Process process;
     private HelloRequest request;
 
-    public static void main(String[] args) {
-        var cwt = Transport.UDS.makeChannel();
-    }
-
     @Setup(Level.Trial)
     public void setUp() throws IOException {
-        var channelWithToken = transport.makeChannel();
+        var channelWithToken = ClientUtils.makeChannel(transport);
 
         var serverCommand = String.format("../gradlew run --args='%s %s'", transport.name(), channelWithToken.token());
         process = new ProcessBuilder()

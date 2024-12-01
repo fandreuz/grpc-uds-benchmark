@@ -14,8 +14,7 @@ public class Server {
 
     public static void main(String[] args) throws InterruptedException, IOException {
         var transport = Transport.valueOf(args[0]);
-        io.grpc.Server server = transport
-                .makeServerBuilder(args[1])
+        io.grpc.Server server = ServerUtils.makeServerBuilder(transport, args[1])
                 .addService(new GreeterEcho())
                 .maxInboundMessageSize(GRPC_MESSAGE_SIZE_LIMIT_BYTES_INT)
                 .build()
