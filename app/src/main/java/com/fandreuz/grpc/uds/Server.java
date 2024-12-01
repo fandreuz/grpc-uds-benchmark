@@ -3,18 +3,21 @@ package com.fandreuz.grpc.uds;
 import com.fandreuz.grpc.uds.benchmark.echo.helloworld.GreeterGrpc;
 import com.fandreuz.grpc.uds.benchmark.echo.helloworld.HelloReply;
 import com.fandreuz.grpc.uds.benchmark.echo.helloworld.HelloRequest;
-import io.grpc.Grpc;
-import io.grpc.InsecureServerCredentials;
 import io.grpc.stub.StreamObserver;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class Server {
 
+    public static final String GRPC_MESSAGE_SIZE_LIMIT_BYTES = "209715200";
+    public static final int GRPC_MESSAGE_SIZE_LIMIT_BYTES_INT = Integer.parseInt(GRPC_MESSAGE_SIZE_LIMIT_BYTES);
+
     public static void main(String[] args) throws InterruptedException, IOException {
-        int port = Integer.parseInt(args[0]);
-        io.grpc.Server server = Grpc.newServerBuilderForPort(port, InsecureServerCredentials.create())
+        var transport = Transport.valueOf(args[0]);
+        io.grpc.Server server = transport
+                .makeServerBuilder(args[1])
                 .addService(new GreeterEcho())
+                .maxInboundMessageSize(GRPC_MESSAGE_SIZE_LIMIT_BYTES_INT)
                 .build()
                 .start();
 

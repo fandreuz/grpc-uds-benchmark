@@ -1,10 +1,12 @@
 import com.google.protobuf.gradle.id
+import me.champeau.jmh.JMHTask
 
 plugins {
     application
     id("com.google.protobuf") version "0.9.4"
     id("me.champeau.jmh") version "0.7.2"
     id("com.diffplug.spotless") version "7.0.0.BETA4"
+    id("io.freefair.lombok") version "8.11"
 }
 
 val grpcVersion = "1.68.2"
@@ -20,7 +22,7 @@ dependencies {
     implementation("io.grpc:grpc-protobuf:$grpcVersion")
     implementation("io.grpc:grpc-services:$grpcVersion")
     implementation("io.grpc:grpc-stub:$grpcVersion")
-    runtimeOnly("io.grpc:grpc-netty-shaded:$grpcVersion")
+    implementation("io.grpc:grpc-netty-shaded:$grpcVersion")
     compileOnly("org.apache.tomcat:annotations-api:6.0.53")
 
     testImplementation(libs.junit.jupiter)
