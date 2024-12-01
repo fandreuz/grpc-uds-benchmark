@@ -4,6 +4,7 @@ plugins {
     application
     id("com.google.protobuf") version "0.9.4"
     id("me.champeau.jmh") version "0.7.2"
+    id("com.diffplug.spotless") version "7.0.0.BETA4"
 }
 
 val grpcVersion = "1.68.2"
@@ -51,9 +52,17 @@ java {
 }
 
 application {
-    mainClass = "com.fandreuz.Main"
+    mainClass = "com.fandreuz.grpc.uds.Server"
 }
 
 tasks.named<Test>("test") {
     useJUnitPlatform()
+}
+
+spotless {
+    java {
+        removeUnusedImports()
+        indentWithSpaces()
+        palantirJavaFormat()
+    }
 }
