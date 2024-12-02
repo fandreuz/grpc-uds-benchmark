@@ -1,5 +1,4 @@
 import com.google.protobuf.gradle.id
-import me.champeau.jmh.JMHTask
 
 plugins {
   application
@@ -45,6 +44,7 @@ spotless {
     removeUnusedImports()
     indentWithSpaces()
     palantirJavaFormat()
+    targetExclude("**/build/generated/**")
   }
   kotlinGradle { ktfmt() }
 }
