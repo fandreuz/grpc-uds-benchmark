@@ -14,6 +14,13 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ServerUtils {
 
+    public String makeTarget(Transport transport, Object token) {
+        return switch (transport) {
+            case TCP_IP -> "localhost:" + token;
+            case UDS -> "unix:///" + token;
+        };
+    }
+
     public ServerBuilder<?> makeServerBuilder(Transport transport, String serializedToken) {
         return switch (transport) {
             case TCP_IP -> {
