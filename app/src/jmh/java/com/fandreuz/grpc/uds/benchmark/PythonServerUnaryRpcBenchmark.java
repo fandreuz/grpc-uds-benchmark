@@ -59,7 +59,7 @@ public class PythonServerUnaryRpcBenchmark {
 
     @Benchmark
     @BenchmarkMode(Mode.Throughput)
-    @Fork(value = 2, warmups = 1)
+    @Fork(value = 3, warmups = 2)
     public void init(Blackhole blackhole) {
         blackhole.consume(stub.sayHello(request));
     }
