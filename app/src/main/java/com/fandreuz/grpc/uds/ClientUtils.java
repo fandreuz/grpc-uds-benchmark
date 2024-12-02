@@ -31,7 +31,7 @@ public class ClientUtils {
 
                 var channel = NettyChannelBuilder.forAddress(
                                 new DomainSocketAddress(socket.toFile()), InsecureChannelCredentials.create())
-                        .eventLoopGroup(new EpollEventLoopGroup())
+                        .eventLoopGroup(new EpollEventLoopGroup(10, Utils.makeDaemonThreadFactory("client")))
                         .channelType(EpollDomainSocketChannel.class)
                         .maxInboundMessageSize(Server.GRPC_MESSAGE_SIZE_LIMIT_BYTES_INT)
                         .build();

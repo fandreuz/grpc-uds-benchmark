@@ -28,10 +28,6 @@ public class ServerUtils {
                 yield Grpc.newServerBuilderForPort(port, InsecureServerCredentials.create());
             }
             case UDS -> {
-                var bossThreadFactory = new ThreadFactoryBuilder()
-                        .setNameFormat("boss-pool-%d")
-                        .setDaemon(true)
-                        .build();
                 var workThreadFactory = new ThreadFactoryBuilder()
                         .setNameFormat("work-pool-%d")
                         .setDaemon(true)
@@ -39,8 +35,8 @@ public class ServerUtils {
                 yield NettyServerBuilder.forAddress(
                                 new DomainSocketAddress(Path.of(serializedToken).toFile()),
                                 InsecureServerCredentials.create())
-                        .bossEventLoopGroup(new EpollEventLoopGroup(5, bossThreadFactory))
-                        .workerEventLoopGroup(new EpollEventLoopGroup(10, workThreadFactory))
+                        .bossEventLoopGroup(new EpollEventLoopGroup(5, Utils.makeDaemonThreadFactory("boss")))
+                        .workerEventLoopGroup(new EpollEventLoopGroup(10, Utils.makeDaemonThreadFactory("worker")))
                         .channelType(EpollServerDomainSocketChannel.class);
             }
         };
