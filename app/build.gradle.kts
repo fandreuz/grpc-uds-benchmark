@@ -19,7 +19,8 @@ dependencies {
   implementation("io.grpc:grpc-protobuf:$grpcVersion")
   implementation("io.grpc:grpc-services:$grpcVersion")
   implementation("io.grpc:grpc-stub:$grpcVersion")
-  implementation("io.grpc:grpc-netty-shaded:$grpcVersion")
+  implementation("io.grpc:grpc-netty:$grpcVersion")
+  implementation("io.netty:netty-all:4.1.115.Final")
   compileOnly("org.apache.tomcat:annotations-api:6.0.53")
 
   testImplementation(libs.junit.jupiter)
