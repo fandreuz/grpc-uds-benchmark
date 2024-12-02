@@ -33,6 +33,7 @@ public class ClientUtils {
                                 new DomainSocketAddress(socket.toFile()), InsecureChannelCredentials.create())
                         .eventLoopGroup(new EpollEventLoopGroup())
                         .channelType(EpollDomainSocketChannel.class)
+                        .maxInboundMessageSize(Server.GRPC_MESSAGE_SIZE_LIMIT_BYTES_INT)
                         .build();
                 yield new ChannelWithToken(channel, socket);
             }
