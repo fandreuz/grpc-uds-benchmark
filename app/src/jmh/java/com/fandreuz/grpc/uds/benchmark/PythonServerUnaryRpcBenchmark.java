@@ -41,7 +41,7 @@ public class PythonServerUnaryRpcBenchmark {
         String target = ServerUtils.makeTarget(transport, channelWithToken.token());
         var serverCommand = "cd python_server; source venv/bin/activate; python server.py " + target;
         process = new ProcessBuilder()
-                .command("bash", "-c", serverCommand)
+                .command("bash", "--noprofile", "--norc", "-c", serverCommand)
                 .inheritIO()
                 .redirectErrorStream(true)
                 .start();
