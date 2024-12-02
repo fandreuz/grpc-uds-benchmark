@@ -19,7 +19,7 @@ import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.TearDown;
 
-@State(Scope.Thread)
+@State(Scope.Benchmark)
 public class UnaryRpcBenchmark {
 
     @Param({"1", "1024", "1048576", Server.GRPC_MESSAGE_SIZE_LIMIT_BYTES})

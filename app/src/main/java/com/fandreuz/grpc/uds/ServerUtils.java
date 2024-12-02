@@ -9,9 +9,6 @@ import io.grpc.netty.shaded.io.netty.channel.epoll.EpollEventLoopGroup;
 import io.grpc.netty.shaded.io.netty.channel.epoll.EpollServerDomainSocketChannel;
 import io.grpc.netty.shaded.io.netty.channel.unix.DomainSocketAddress;
 import java.nio.file.Path;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -28,20 +25,14 @@ public class ServerUtils {
                         .setNameFormat("boss-pool-%d")
                         .setDaemon(true)
                         .build();
-                var bossExecutor = new ThreadPoolExecutor(
-                        2, 5, 1, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10), bossThreadFactory);
-
                 var workThreadFactory = new ThreadFactoryBuilder()
                         .setNameFormat("work-pool-%d")
                         .setDaemon(true)
                         .build();
-                var workExecutor = new ThreadPoolExecutor(
-                        2, 10, 1, TimeUnit.SECONDS, new ArrayBlockingQueue<>(1000), workThreadFactory);
-
                 yield NettyServerBuilder.forAddress(
                                 new DomainSocketAddress(Path.of(serializedToken).toFile()))
-                        .bossEventLoopGroup(new EpollEventLoopGroup(5, bossExecutor))
-                        .workerEventLoopGroup(new EpollEventLoopGroup(10, workExecutor))
+                        .bossEventLoopGroup(new EpollEventLoopGroup(5, bossThreadFactory))
+                        .workerEventLoopGroup(new EpollEventLoopGroup(10, workThreadFactory))
                         .channelType(EpollServerDomainSocketChannel.class);
             }
         };
