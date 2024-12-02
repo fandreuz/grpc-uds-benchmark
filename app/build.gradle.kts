@@ -48,5 +48,3 @@ spotless {
   }
   kotlinGradle { ktfmt() }
 }
-
-tasks.withType<JMHTask> { dependsOn(tasks.withType<CreateStartScripts>()) }
