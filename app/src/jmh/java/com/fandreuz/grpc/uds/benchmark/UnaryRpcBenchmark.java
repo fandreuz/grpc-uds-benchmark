@@ -65,6 +65,5 @@ public class UnaryRpcBenchmark {
     @TearDown(Level.Trial)
     public void tearDown() throws IOException {
         process.destroyForcibly();
-        Runtime.getRuntime().exec(new String[] {"kill", "-9", String.valueOf(process.pid())});
     }
 }
