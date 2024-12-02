@@ -21,7 +21,7 @@ import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.infra.Blackhole;
 
 @State(Scope.Benchmark)
-public class UnaryRpcBenchmark {
+public class JavaServerUnaryRpcBenchmark {
 
     @Param({"1", "1024", "1048576", Server.GRPC_MESSAGE_SIZE_LIMIT_BYTES})
     private int bytesCount;
@@ -63,7 +63,7 @@ public class UnaryRpcBenchmark {
     }
 
     @TearDown(Level.Trial)
-    public void tearDown() throws IOException {
+    public void tearDown() {
         process.destroyForcibly();
     }
 }
