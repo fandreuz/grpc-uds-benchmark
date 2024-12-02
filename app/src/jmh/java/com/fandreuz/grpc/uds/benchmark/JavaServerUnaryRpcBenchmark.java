@@ -37,7 +37,8 @@ public class JavaServerUnaryRpcBenchmark {
     public void setUp() throws IOException {
         var channelWithToken = ClientUtils.makeChannel(transport);
 
-        var serverCommand = String.format("../gradlew run --args='%s %s'", transport.name(), channelWithToken.token());
+        var serverCommand = String.format(
+                "$JAVA_HOME/bin/java -jar app/build/libs/app.jar %s %s", transport.name(), channelWithToken.token());
         process = new ProcessBuilder()
                 .command("bash", "-c", serverCommand)
                 .inheritIO()

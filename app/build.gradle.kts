@@ -37,6 +37,8 @@ java { toolchain { languageVersion = JavaLanguageVersion.of(21) } }
 
 application { mainClass = "com.fandreuz.grpc.uds.Server" }
 
+tasks.withType<Jar> { manifest { attributes.put("Main-Class", "com.fandreuz.grpc.uds.Server") } }
+
 tasks.named<Test>("test") { useJUnitPlatform() }
 
 spotless {
