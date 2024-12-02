@@ -1,4 +1,5 @@
 import com.google.protobuf.gradle.id
+import me.champeau.jmh.JMHTask
 
 plugins {
   application
@@ -47,3 +48,5 @@ spotless {
   }
   kotlinGradle { ktfmt() }
 }
+
+tasks.withType<JMHTask> { dependsOn(tasks.withType<CreateStartScripts>()) }
