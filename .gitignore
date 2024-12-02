@@ -1,3 +1,6 @@
+# IntelliJ stuff
+**/.idea/**
+
 # Compiled Proto Python files
 **/*pb2*
 
