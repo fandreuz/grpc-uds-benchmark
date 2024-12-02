@@ -1,13 +1,13 @@
-__pycache__/**
+__pycache__
 
 # IntelliJ stuff
-**/.idea/**
+**/.idea
 
 # Compiled Proto Python files
 **/*pb2*
 
 # Python virtual environment
-**/venv/**
+**/venv
 
 # Compiled class fil.dockerie
 *.class
