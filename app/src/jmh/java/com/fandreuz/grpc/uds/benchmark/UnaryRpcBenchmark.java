@@ -18,6 +18,7 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.TearDown;
+import org.openjdk.jmh.infra.Blackhole;
 
 @State(Scope.Benchmark)
 public class UnaryRpcBenchmark {
@@ -57,13 +58,13 @@ public class UnaryRpcBenchmark {
     @Benchmark
     @BenchmarkMode(Mode.Throughput)
     @Fork(value = 2, warmups = 1)
-    public void init() {
-        var result = stub.sayHello(request);
-        assert result.getPayload().equals(request.getPayload());
+    public void init(Blackhole blackhole) {
+        blackhole.consume(stub.sayHello(request));
     }
 
     @TearDown(Level.Trial)
-    public void tearDown() {
+    public void tearDown() throws IOException {
         process.destroyForcibly();
+        Runtime.getRuntime().exec(new String[] {"kill", "-9", String.valueOf(process.pid())});
     }
 }

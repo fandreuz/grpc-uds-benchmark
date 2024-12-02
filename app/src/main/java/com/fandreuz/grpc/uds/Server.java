@@ -5,7 +5,6 @@ import com.fandreuz.grpc.uds.benchmark.echo.helloworld.HelloReply;
 import com.fandreuz.grpc.uds.benchmark.echo.helloworld.HelloRequest;
 import io.grpc.stub.StreamObserver;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 public class Server {
 
@@ -19,14 +18,6 @@ public class Server {
                 .maxInboundMessageSize(GRPC_MESSAGE_SIZE_LIMIT_BYTES_INT)
                 .build()
                 .start();
-
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            try {
-                server.shutdownNow().awaitTermination(30, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                e.printStackTrace(System.err);
-            }
-        }));
         server.awaitTermination();
     }
 
