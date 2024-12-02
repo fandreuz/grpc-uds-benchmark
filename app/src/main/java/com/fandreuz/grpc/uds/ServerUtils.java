@@ -1,6 +1,5 @@
 package com.fandreuz.grpc.uds;
 
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.grpc.Grpc;
 import io.grpc.InsecureServerCredentials;
 import io.grpc.ServerBuilder;
@@ -27,18 +26,12 @@ public class ServerUtils {
                 var port = Integer.parseInt(serializedToken);
                 yield Grpc.newServerBuilderForPort(port, InsecureServerCredentials.create());
             }
-            case UDS -> {
-                var workThreadFactory = new ThreadFactoryBuilder()
-                        .setNameFormat("work-pool-%d")
-                        .setDaemon(true)
-                        .build();
-                yield NettyServerBuilder.forAddress(
-                                new DomainSocketAddress(Path.of(serializedToken).toFile()),
-                                InsecureServerCredentials.create())
-                        .bossEventLoopGroup(new EpollEventLoopGroup(5, Utils.makeDaemonThreadFactory("boss")))
-                        .workerEventLoopGroup(new EpollEventLoopGroup(10, Utils.makeDaemonThreadFactory("worker")))
-                        .channelType(EpollServerDomainSocketChannel.class);
-            }
+            case UDS -> NettyServerBuilder.forAddress(
+                            new DomainSocketAddress(Path.of(serializedToken).toFile()),
+                            InsecureServerCredentials.create())
+                    .bossEventLoopGroup(new EpollEventLoopGroup(5, Utils.makeDaemonThreadFactory("boss")))
+                    .workerEventLoopGroup(new EpollEventLoopGroup(10, Utils.makeDaemonThreadFactory("worker")))
+                    .channelType(EpollServerDomainSocketChannel.class);
         };
     }
 }
