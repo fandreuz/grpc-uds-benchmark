@@ -1,6 +1,9 @@
 # Compiled Proto Python files
 **/*pb2*
 
+# Python virtual environment
+**/venv/**
+
 # Compiled class file
 *.class
 
