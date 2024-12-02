@@ -1,3 +1,5 @@
+__pycache__/**
+
 # IntelliJ stuff
 **/.idea/**
 
@@ -7,7 +9,7 @@
 # Python virtual environment
 **/venv/**
 
-# Compiled class file
+# Compiled class fil.dockerie
 *.class
 
 # Log file
