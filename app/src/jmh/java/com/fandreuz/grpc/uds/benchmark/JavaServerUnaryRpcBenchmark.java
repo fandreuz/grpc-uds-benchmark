@@ -38,7 +38,7 @@ public class JavaServerUnaryRpcBenchmark {
         var channelWithToken = ClientUtils.makeChannel(transport);
 
         process = new ProcessBuilder()
-                .command("dist/app/bin/app", transport.name(), String.valueOf(channelWithToken.token()))
+                .command("app/bin/app", transport.name(), String.valueOf(channelWithToken.token()))
                 .inheritIO()
                 .redirectErrorStream(true)
                 .start();
