@@ -4,7 +4,6 @@ import io.grpc.Grpc;
 import io.grpc.InsecureChannelCredentials;
 import io.grpc.ManagedChannel;
 import io.grpc.netty.NettyChannelBuilder;
-import io.netty.channel.ChannelOption;
 import io.netty.channel.epoll.EpollDomainSocketChannel;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.unix.DomainSocketAddress;
@@ -35,7 +34,6 @@ public class ClientUtils {
                         .eventLoopGroup(new EpollEventLoopGroup(10, Utils.makeDaemonThreadFactory("client")))
                         .channelType(EpollDomainSocketChannel.class)
                         .maxInboundMessageSize(Server.GRPC_MESSAGE_SIZE_LIMIT_BYTES_INT)
-                        .withOption(ChannelOption.SO_KEEPALIVE, false)
                         .build();
                 yield new ChannelWithToken(channel, socket);
             }
