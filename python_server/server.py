@@ -20,7 +20,7 @@ if __name__ == "__main__":
         futures.ThreadPoolExecutor(max_workers=10),
         options=[
             ("grpc.max_send_message_length", grpc_max_bytes),
-            ("grpc.max_recieve_message_length", grpc_max_bytes),
+            ("grpc.max_receive_message_length", grpc_max_bytes),
         ],
     )
     helloworld_pb2_grpc.add_GreeterServicer_to_server(Greeter(), server)
