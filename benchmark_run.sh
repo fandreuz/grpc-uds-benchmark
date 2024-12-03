@@ -17,12 +17,12 @@ cp ../app/build/libs/app-jmh.jar .
 
 # Setup Python environment
 cp -r ../python_server .
+cd python_server || exit
 python -m venv --upgrade-deps --clear venv
 source venv/bin/activate
 python -m pip install --requirement python_server/requirements.txt
 
 # Compile .proto files
-cd python_server || exit
 python -m grpc_tools.protoc \
 	-I "${script_dir}/app/src/main/proto/com/fandreuz/grpc/uds/benchmark/echo" \
 	--python_out=. \
