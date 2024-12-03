@@ -20,7 +20,7 @@ cp -r ../python_server .
 cd python_server || exit
 python -m venv --upgrade-deps --clear venv
 source venv/bin/activate
-python -m pip install --requirement python_server/requirements.txt
+python -m pip install --requirement requirements.txt
 
 # Compile .proto files
 python -m grpc_tools.protoc \
