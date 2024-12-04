@@ -8,6 +8,7 @@ import com.fandreuz.grpc.uds.benchmark.echo.helloworld.GreeterGrpc;
 import com.fandreuz.grpc.uds.benchmark.echo.helloworld.HelloRequest;
 import com.google.protobuf.ByteString;
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -24,11 +25,18 @@ import org.openjdk.jmh.infra.Blackhole;
 @State(Scope.Benchmark)
 public class PythonServerUnaryRpcBenchmark {
 
+    private static final String JAVA_SERVER = "Java";
+    private static final String PYTHON_SERVER = "Python";
+    private static final String PYTHON_ASYNCIO_SERVER = "PythonAsyncIO";
+
     @Param({"1", "1024", "1048576", Server.GRPC_MESSAGE_SIZE_LIMIT_BYTES})
     private int bytesCount;
 
     @Param({"UDS", "TCP_IP"})
     private Transport transport;
+
+    @Param({JAVA_SERVER, PYTHON_SERVER, PYTHON_ASYNCIO_SERVER})
+    private String serverType;
 
     private GreeterGrpc.GreeterBlockingStub stub;
     private Process process;
@@ -39,9 +47,16 @@ public class PythonServerUnaryRpcBenchmark {
         var channelWithToken = ClientUtils.makeChannel(transport);
 
         String target = ServerUtils.makeTarget(transport, channelWithToken.token());
-        var serverCommand = "cd python_server; source venv/bin/activate; python server.py " + target;
+        List<String> command =
+                switch (serverType) {
+                    case JAVA_SERVER -> List.of(
+                            "app/bin/app", transport.name(), String.valueOf(channelWithToken.token()));
+                    case PYTHON_SERVER -> makePythonScriptTrigger("server.py", target);
+                    case PYTHON_ASYNCIO_SERVER -> makePythonScriptTrigger("asyncio_server.py", target);
+                    default -> throw new IllegalArgumentException("Unexpected server type: " + serverType);
+                };
         process = new ProcessBuilder()
-                .command("bash", "--noprofile", "--norc", "-c", serverCommand)
+                .command(command)
                 .inheritIO()
                 .redirectErrorStream(true)
                 .start();
@@ -67,5 +82,14 @@ public class PythonServerUnaryRpcBenchmark {
     @TearDown(Level.Trial)
     public void tearDown() {
         process.destroyForcibly();
+    }
+
+    private static List<String> makePythonScriptTrigger(String scriptName, String target) {
+        return List.of(
+                "bash",
+                "--noprofile",
+                "--norc",
+                "-c",
+                String.format("cd python_server; source venv/bin/activate; python %s %s", scriptName, target));
     }
 }
