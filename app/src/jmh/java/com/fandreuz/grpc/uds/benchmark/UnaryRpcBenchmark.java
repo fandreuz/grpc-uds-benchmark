@@ -23,7 +23,7 @@ import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.infra.Blackhole;
 
 @State(Scope.Benchmark)
-public class PythonServerUnaryRpcBenchmark {
+public class UnaryRpcBenchmark {
 
     private static final String JAVA_SERVER = "Java";
     private static final String PYTHON_SERVER = "Python";
